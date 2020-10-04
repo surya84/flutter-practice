@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_bloc/src/blocs/bloc.dart';
 import '../blocs/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -15,8 +16,8 @@ class LoginScreen extends StatelessWidget {
           Container(margin: EdgeInsets.only(top: 20.0)),
           Row(
             children: [
-              loginButton(),
-              registerButton(),
+              loginButton(bloc),
+              // registerButton(),
             ],
           ),
         ],
@@ -57,12 +58,17 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget loginButton() {
-    return FlatButton(
-      onPressed: () {},
-      color: Colors.blueAccent,
-      textColor: Colors.white,
-      child: Text('Login'),
+  Widget loginButton(Bloc bloc) {
+    return StreamBuilder(
+      stream: bloc.submitValid,
+      builder: (context, snapshot) {
+        return RaisedButton(
+          onPressed: snapshot.hasData ? bloc.submit : null,
+          color: Colors.blueAccent,
+          textColor: Colors.white,
+          child: Text('Login'),
+        );
+      },
     );
   }
 
